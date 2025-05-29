@@ -1,3 +1,7 @@
+const createPlayer = function (name, marker) {
+  return { name, marker };
+};
+
 const Gameboard = (function () {
   let board = ["", "", "", "", "", "", "", "", ""];
 
@@ -24,8 +28,16 @@ const GameController = (function () {
   let players = [];
   let currentPlayerIndex;
   let isGameOver = false;
-})();
 
-const createPlayer = (function (name, marker) {
-  return { name, marker };
+  const startGame = () => {
+    players = [createPlayer("Player 1", "X"), createPlayer("Player 2", "O")];
+    currentPlayerIndex = 0;
+    isGameOver = false;
+    console.log("Game started!");
+    console.log(`It's ${players[currentPlayerIndex].name}'s turn which is ${players[currentPlayerIndex].marker}.`);
+  };
+
+  return {
+    startGame,
+  };
 })();
