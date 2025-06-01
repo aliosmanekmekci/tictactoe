@@ -17,7 +17,7 @@ const Gameboard = (function () {
   };
 
   const resetBoard = () => {
-    board = ["", "", "", "", "", "", "", ""];
+    board = ["", "", "", "", "", "", "", "", ""];
     console.log("Game board has been reset.");
   };
 
@@ -65,10 +65,51 @@ const GameController = (function () {
     currentPlayerIndex = 0;
     isGameOver = false;
     console.log("Game started!");
+
+    _displayBoardInConsole();
     console.log(`It's ${players[currentPlayerIndex].name}'s turn which is ${players[currentPlayerIndex].marker}.`);
+  };
+
+  const playRound = (index) => {
+    if (isGameOver) {
+      console.log(`The Game is over! Start a new game to play again.`);
+      return;
+    }
+
+    const currentPlayer = players[currentPlayerIndex];
+    const markPlaced = Gameboard.placeMark(index, currentPlayer.marker);
+
+    if (markPlaced) {
+      _displayBoardInConsole();
+      if (_checkWin()) {
+        console.log(`${currentPlayer.name} (${currentPlayer.marker}) wins!`);
+        isGameOver = true;
+        return;
+      }
+      if (_checkTie()) {
+        console.log(`It's a tie!`);
+        isGameOver = true;
+        return;
+      }
+      _switchTurn();
+    } else {
+      console.log(`Invalid move. Try again!`);
+    }
+  };
+
+  const _displayBoardInConsole = () => {
+    const board = Gameboard.getBoard();
+    console.log(`
+      ${board[0]} | ${board[1]} | ${board[2]}
+      ---------
+      ${board[3]} | ${board[4]} | ${board[5]}
+      ---------
+      ${board[6]} | ${board[7]} | ${board[8]}
+  `);
   };
 
   return {
     startGame,
+    playRound,
   };
 })();
