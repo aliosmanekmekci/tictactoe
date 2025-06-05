@@ -3,3 +3,46 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.game-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Full viewport height */
+  margin: 0;
+  background-color: #f0f0f0;
+  font-family: sans-serif;
+}
+
+.board {
+  display: grid;
+  /* Define 3 columns, each taking an equal fraction of the available space */
+  grid-template-columns: repeat(3, 1fr);
+  /* Define 3 rows, each taking an equal fraction */
+  grid-template-rows: repeat(3, 1fr); /* Optional, but good for explicit layout */
+  gap: 10px; /* Space between grid items */
+  width: 300px; /* Set a fixed width for the board */
+  height: 300px; /* Set a fixed height for the board to make cells square */
+  background-color: #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 10px; /* Padding inside the board */
+}
+
+.cell {
+  display: flex; /* Use flexbox to center content inside each cell */
+  justify-content: center;
+  align-items: center;
+  background-color: #eee;
+  border: 1px solid #999;
+  border-radius: 4px;
+  font-size: 2em; /* Example: make text inside larger */
+  color: #555;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.cell:hover {
+  background-color: #ddd;
+  transform: scale(1.02);
+}

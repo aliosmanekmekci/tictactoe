@@ -5,7 +5,7 @@ const createPlayer = function (name, marker) {
 const Gameboard = (function () {
   let board = ["", "", "", "", "", "", "", "", ""];
 
-  const getBoard = () => board;
+  const getBoard = () => [...board];
 
   const placeMark = (index, marker) => {
     if (index < 0 || index >= board.length || board[index] !== "") {
@@ -99,17 +99,27 @@ const GameController = (function () {
 
   const _displayBoardInConsole = () => {
     const board = Gameboard.getBoard();
-    console.log(`
-      ${board[0]} | ${board[1]} | ${board[2]}
-      ---------
-      ${board[3]} | ${board[4]} | ${board[5]}
-      ---------
-      ${board[6]} | ${board[7]} | ${board[8]}
-  `);
+    DisplayController.renderBoard();
   };
 
   return {
     startGame,
     playRound,
+  };
+})();
+
+const DisplayController = (() => {
+  const cells = document.querySelectorAll(".cell");
+
+  const renderBoard = () => {
+    const currentBoard = Gameboard.getBoard();
+
+    cells.forEach((cell, index) => {
+      cell.textContent = currentBoard[index];
+    });
+  };
+
+  return {
+    renderBoard,
   };
 })();
