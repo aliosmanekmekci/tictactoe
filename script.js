@@ -66,7 +66,6 @@ const GameController = (function () {
     isGameOver = false;
     console.log("Game started!");
 
-    _displayBoardInConsole();
     console.log(`It's ${players[currentPlayerIndex].name}'s turn which is ${players[currentPlayerIndex].marker}.`);
   };
 
@@ -80,7 +79,7 @@ const GameController = (function () {
     const markPlaced = Gameboard.placeMark(index, currentPlayer.marker);
 
     if (markPlaced) {
-      _displayBoardInConsole();
+      DisplayController.renderBoard();
       if (_checkWin()) {
         console.log(`${currentPlayer.name} (${currentPlayer.marker}) wins!`);
         isGameOver = true;
@@ -97,11 +96,6 @@ const GameController = (function () {
     }
   };
 
-  const _displayBoardInConsole = () => {
-    const board = Gameboard.getBoard();
-    DisplayController.renderBoard();
-  };
-
   return {
     startGame,
     playRound,
@@ -110,6 +104,16 @@ const GameController = (function () {
 
 const DisplayController = (() => {
   const cells = document.querySelectorAll(".cell");
+  const messageElement = document.querySelector(".message");
+
+  const _addCellClickListeners = () => {
+    cells.forEach((cell) => {
+      cell.addEventListener("click", (e) => {
+        const clickedIndex = parseInt(e.target.dataset.index);
+        GameController.playRound(clickedIndex - 1);
+      });
+    });
+  };
 
   const renderBoard = () => {
     const currentBoard = Gameboard.getBoard();
@@ -118,6 +122,12 @@ const DisplayController = (() => {
       cell.textContent = currentBoard[index];
     });
   };
+
+  const setGameMessage = (message) => {
+    console.log("Game message:", message);
+  };
+
+  _addCellClickListeners();
 
   return {
     renderBoard,
