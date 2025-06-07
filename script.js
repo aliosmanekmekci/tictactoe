@@ -24,6 +24,40 @@ const Gameboard = (function () {
   return { getBoard, placeMark, resetBoard };
 })();
 
+const DisplayController = (() => {
+  const cells = document.querySelectorAll(".cell");
+  const messageElement = document.querySelector(".game-message");
+
+  const _addCellClickListeners = () => {
+    cells.forEach((cell) => {
+      cell.addEventListener("click", (e) => {
+        const clickedIndex = parseInt(e.target.dataset.index);
+        GameController.playRound(clickedIndex);
+      });
+    });
+  };
+
+  const renderBoard = () => {
+    const currentBoard = Gameboard.getBoard();
+
+    cells.forEach((cell, index) => {
+      cell.textContent = currentBoard[index];
+    });
+  };
+
+  const setGameMessage = (message) => {
+    messageElement.textContent = message;
+    console.log("Game message:", message);
+  };
+
+  _addCellClickListeners();
+
+  return {
+    renderBoard,
+    setGameMessage,
+  };
+})();
+
 const GameController = (function () {
   let players = [];
   let currentPlayerIndex;
@@ -57,7 +91,9 @@ const GameController = (function () {
 
   const _switchTurn = () => {
     currentPlayerIndex = 1 - currentPlayerIndex;
-    console.log(`It's ${players[currentPlayerIndex].name}'s turn ${players[currentPlayerIndex].marker}.`);
+    DisplayController.setGameMessage(
+      `It's ${players[currentPlayerIndex].name}'s turn ${players[currentPlayerIndex].marker}.`
+    );
   };
 
   const startGame = () => {
@@ -66,12 +102,14 @@ const GameController = (function () {
     isGameOver = false;
     console.log("Game started!");
 
-    console.log(`It's ${players[currentPlayerIndex].name}'s turn which is ${players[currentPlayerIndex].marker}.`);
+    DisplayController.setGameMessage(
+      `It's ${players[currentPlayerIndex].name}'s turn which is ${players[currentPlayerIndex].marker}.`
+    );
   };
 
   const playRound = (index) => {
     if (isGameOver) {
-      console.log(`The Game is over! Start a new game to play again.`);
+      DisplayController.setGameMessage(`The Game is over! Start a new game to play again.`);
       return;
     }
 
@@ -81,55 +119,23 @@ const GameController = (function () {
     if (markPlaced) {
       DisplayController.renderBoard();
       if (_checkWin()) {
-        console.log(`${currentPlayer.name} (${currentPlayer.marker}) wins!`);
+        DisplayController.setGameMessage(`${currentPlayer.name} (${currentPlayer.marker}) wins!`);
         isGameOver = true;
         return;
       }
       if (_checkTie()) {
-        console.log(`It's a tie!`);
+        DisplayController.setGameMessage(`It's a tie!`);
         isGameOver = true;
         return;
       }
       _switchTurn();
     } else {
-      console.log(`Invalid move. Try again!`);
+      DisplayController.setGameMessage(`Invalid move. Try again!`);
     }
   };
 
   return {
     startGame,
     playRound,
-  };
-})();
-
-const DisplayController = (() => {
-  const cells = document.querySelectorAll(".cell");
-  const messageElement = document.querySelector(".message");
-
-  const _addCellClickListeners = () => {
-    cells.forEach((cell) => {
-      cell.addEventListener("click", (e) => {
-        const clickedIndex = parseInt(e.target.dataset.index);
-        GameController.playRound(clickedIndex - 1);
-      });
-    });
-  };
-
-  const renderBoard = () => {
-    const currentBoard = Gameboard.getBoard();
-
-    cells.forEach((cell, index) => {
-      cell.textContent = currentBoard[index];
-    });
-  };
-
-  const setGameMessage = (message) => {
-    console.log("Game message:", message);
-  };
-
-  _addCellClickListeners();
-
-  return {
-    renderBoard,
   };
 })();
