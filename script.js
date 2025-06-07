@@ -27,6 +27,7 @@ const Gameboard = (function () {
 const DisplayController = (() => {
   const cells = document.querySelectorAll(".cell");
   const messageElement = document.querySelector(".game-message");
+  const restartButton = document.querySelector(".restart-button");
 
   const _addCellClickListeners = () => {
     cells.forEach((cell) => {
@@ -34,6 +35,10 @@ const DisplayController = (() => {
         const clickedIndex = parseInt(e.target.dataset.index);
         GameController.playRound(clickedIndex);
       });
+    });
+
+    restartButton.addEventListener("click", (e) => {
+      GameController.startGame();
     });
   };
 
