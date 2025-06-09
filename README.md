@@ -6,4 +6,4 @@ This is a project for [The Odin Project](https://www.theodinproject.com/) curric
 ## Live Demo
 
 You can view the live demo of the project here:  
-👉 [Library on GitHub Pages](https://aliosmanekmekci.github.io/Library/)
+👉 [Tic Tac Toe on GitHub Pages](https://aliosmanekmekci.github.io/tictactoe/)
